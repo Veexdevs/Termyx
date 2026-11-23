@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    name: Build Android APKs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - run: yes | sdkmanager --licenses || true
+      - run: sdkmanager "ndk;26.3.11579264" "build-tools;34.0.0" "platforms;android-34"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.9
+      - run: gradle :android:assembleRelease --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: termyx-android-release
+          path: android/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
+
+  windows:
+    name: Build Windows EXE
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.9
+      - run: gradle :desktop:createDistributable --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: termyx-windows-exe
+          path: desktop/build/compose/binaries/main/app/**/TERMYX.exe
+          if-no-files-found: warn
+
+  release:
+    name: Create GitHub Release
+    needs: [android, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Stage assets
+        run: |
+          mkdir -p dist
+          find artifacts -name '*.apk' -exec cp {} dist/ \;
+          find artifacts -name 'TERMYX.exe' -exec cp {} dist/ \;
+          ls -la dist
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

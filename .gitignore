@@ -1,0 +1,36 @@
+# Build outputs
+/build/
+*/build/
+*.apk
+*.aab
+*.exe
+*.msi
+dist/
+out/
+release/
+
+# Gradle
+.gradle/
+gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Android
+local.properties
+*.keystore
+*.jks
+captures/
+.externalNativeBuild/
+.cxx/
+
+# IntelliJ / Android Studio
+*.iml
+.idea/
+.DS_Store
+*.hprof
+
+# Node (desktop tooling / docs)
+node_modules/
+
+# Secrets
+*.env
+secrets.properties
