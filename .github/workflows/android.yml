@@ -22,14 +22,31 @@ jobs:
 
       - name: Set up Android SDK
         run: |
-          SDK_ROOT=$HOME/android-sdk
-          mkdir -p $SDK_ROOT/cmdline-tools
-          curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o /tmp/cmdtools.zip
-          unzip -q /tmp/cmdtools.zip -d $SDK_ROOT/cmdline-tools
-          mv $SDK_ROOT/cmdline-tools/cmdline-tools $SDK_ROOT/cmdline-tools/latest
-          echo "$SDK_ROOT/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
-          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
-          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          export ANDROID_HOME=$HOME/android-sdk
+          export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+          export PATH=$PATH:$JAVA_HOME/bin
+          python3 - <<'PY'
+          import urllib.request, zipfile, os, shutil
+          url = "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
+          zip_path = "/tmp/cmdtools.zip"
+          print("downloading Android command-line tools...")
+          urllib.request.urlretrieve(url, zip_path)
+          dest = os.path.expanduser("~/android-sdk/cmdline-tools")
+          os.makedirs(dest, exist_ok=True)
+          with zipfile.ZipFile(zip_path) as z:
+              z.extractall(dest)
+          inner = os.path.join(dest, "cmdline-tools")
+          target = os.path.join(dest, "latest")
+          if os.path.isdir(inner):
+              if os.path.exists(target):
+                  shutil.rmtree(target)
+              os.rename(inner, target)
+          print("extracted SDK command-line tools to", target)
+          PY
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
