@@ -1,13 +1,13 @@
 plugins {
-    kotlin("jvm")
-    id("org.jetbrains.compose")
+    kotlin("jvm") version "2.0.21"
+    id("org.jetbrains.compose") version "1.6.11"
 }
 
 kotlin {
     jvmToolchain(17)
     jvm {
         application {
-            mainClass.set("com.termx.desktop.MainKt")
+            mainClass = "com.termx.desktop.MainKt"
         }
     }
     sourceSets {
@@ -31,7 +31,7 @@ compose.desktop {
             packageVersion = "0.1.0"
             description = "TERMYX — Beyond the Terminal"
             copyright = "TERMYX contributors (MIT)"
-            targetFormats(org.jetbrains.compose.desktop.application.dsl.NativeDistributionType.Exe)
+            targetFormats(NativeDistributionType.Exe)
             windows {
                 menu = true
                 perUserInstall = true
