@@ -438,10 +438,10 @@ class TerminalEmulator(
                 code == 27 -> curInverse = false
                 code == 29 -> curStrike = false
                 code in 30..37 -> curFg = TerminalPalette.color(code - 30)
-                code == 38 -> { curFg = readExtendedColor(p, i).also { i = it.second }; }
+                code == 38 -> { val r = readExtendedColor(p, i); curFg = r.first; i = r.second }
                 code == 39 -> curFg = COLOR_DEFAULT
                 code in 40..47 -> curBg = TerminalPalette.color(code - 40)
-                code == 48 -> { curBg = readExtendedColor(p, i).also { i = it.second }; }
+                code == 48 -> { val r = readExtendedColor(p, i); curBg = r.first; i = r.second }
                 code == 49 -> curBg = COLOR_DEFAULT
                 code in 90..97 -> curFg = TerminalPalette.color(code - 90 + 8)
                 code in 100..107 -> curBg = TerminalPalette.color(code - 100 + 8)
