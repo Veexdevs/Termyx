@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,8 +25,8 @@ import com.termx.ui.components.formatPercent
 @Composable
 fun HomeScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: HomeViewModel = viewModel()
-    val metrics by vm.metrics
-    val device by vm.device
+    val metrics by vm.metrics.collectAsState()
+    val device by vm.device.collectAsState()
 
     ScreenSurface("HOME", padding) {
         CardSection("Device") {

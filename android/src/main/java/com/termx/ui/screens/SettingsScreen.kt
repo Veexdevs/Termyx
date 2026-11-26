@@ -3,6 +3,7 @@ package com.termx.ui.screens
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -14,9 +15,9 @@ import com.termx.ui.components.ToggleRow
 @Composable
 fun SettingsScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: SettingsViewModel = viewModel()
-    val dark by vm.darkTheme
-    val confirm by vm.confirmDestructive
-    val autoStart by vm.autoStartServers
+    val dark by vm.darkTheme.collectAsState()
+    val confirm by vm.confirmDestructive.collectAsState()
+    val autoStart by vm.autoStartServers.collectAsState()
 
     ScreenSurface("Settings", padding) {
         CardSection("Appearance") {

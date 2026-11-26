@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,9 +35,9 @@ import com.termx.ui.components.ScreenSurface
 @Composable
 fun IaScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: AgentViewModel = viewModel()
-    val running by vm.running
-    val log by vm.log
-    val confirmation by vm.confirmation
+    val running by vm.running.collectAsState()
+    val log by vm.log.collectAsState()
+    val confirmation by vm.confirmation.collectAsState()
 
     var request by remember { mutableStateOf("") }
     val events = remember { androidx.compose.runtime.mutableStateListOf<AgentEvent>() }

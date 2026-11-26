@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -33,8 +34,8 @@ import com.termx.ui.components.SecondaryButton
 fun DeviceAccessScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: DeviceAccessViewModel = viewModel()
     val context = LocalContext.current
-    val status by vm.status
-    val output by vm.output
+    val status by vm.status.collectAsState()
+    val output by vm.output.collectAsState()
 
     var cmd by remember { mutableStateOf("") }
     var confirm by remember { mutableStateOf(false) }

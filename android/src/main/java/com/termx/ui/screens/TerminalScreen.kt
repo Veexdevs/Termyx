@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +42,8 @@ import com.termx.terminal.TerminalViewModel
 @Composable
 fun TerminalScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: TerminalViewModel = viewModel()
-    val output by vm.output
-    val running by vm.running
+    val output by vm.output.collectAsState()
+    val running by vm.running.collectAsState()
 
     var input by remember { mutableStateOf("") }
     val scroll = rememberScrollState()
