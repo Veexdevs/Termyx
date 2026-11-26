@@ -10,6 +10,9 @@ jobs:
   build:
     name: Build Windows EXE
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,5 +49,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          { echo "### Windows build errors (compact)"; echo '```'; grep -E '^e: ' /tmp/build.log | head -400 || echo "no e: lines"; echo '```'; } > /tmp/diag.md
+          set +e
+          {
+            echo "### Windows build errors (compact)"
+            echo '```'
+            grep -E '^e: ' /tmp/build.log 2>/dev/null | head -400
+            echo '```'
+          } > /tmp/diag.md
           gh pr comment "${{ github.event.pull_request.number }}" --body "$(cat /tmp/diag.md)" || true
