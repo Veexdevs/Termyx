@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import com.termx.ui.components.CardSection
 import com.termx.ui.components.InfoRow
 import com.termx.ui.components.ScreenSurface
+import com.termx.termxContainer
 
 @Composable
 fun ApplicationsScreen(navController: NavHostController, padding: PaddingValues) {

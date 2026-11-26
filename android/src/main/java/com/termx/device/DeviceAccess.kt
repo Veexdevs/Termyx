@@ -28,11 +28,11 @@ object DeviceAccess {
             true
         }.getOrDefault(false)
 
-    fun kernelSuAvailable(): Boolean =
+    suspend fun kernelSuAvailable(): Boolean =
         runCatching { CommandRunner.run("which ksud").success }.getOrDefault(false) ||
             java.io.File("/data/adb/ksu").exists()
 
-    fun apatchAvailable(): Boolean =
+    suspend fun apatchAvailable(): Boolean =
         java.io.File("/data/adb/ap").exists() ||
             runCatching { CommandRunner.run("which apd").success }.getOrDefault(false)
 

@@ -27,6 +27,11 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // CI has no production keystore, so sign the release variant with the
+            // SDK-generated debug keystore. This yields installable, non-debuggable
+            // release APKs. A real production release must use a dedicated keystore
+            // (see docs/SECURITY.md / STATUS.md) — never commit a key to the repo (§17).
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 

@@ -1,26 +1,22 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 plugins {
-    kotlin("jvm") version "2.0.21"
-    id("org.jetbrains.compose") version "1.6.11"
+    kotlin("jvm")
+    kotlin("plugin.compose")
+    id("org.jetbrains.compose")
 }
 
 kotlin {
     jvmToolchain(17)
-    jvm {
-        application {
-            mainClass = "com.termx.desktop.MainKt"
-        }
-    }
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(compose.material3)
-                implementation(compose.materialIconsExtended)
-                implementation(project(":core"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.9.0")
-            }
-        }
-    }
+}
+
+dependencies {
+    implementation(compose.desktop.currentOs)
+    implementation(compose.material3)
+    implementation(compose.materialIconsExtended)
+    implementation(project(":core"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
 
 compose.desktop {
@@ -31,7 +27,7 @@ compose.desktop {
             packageVersion = "0.1.0"
             description = "TERMYX — Beyond the Terminal"
             copyright = "TERMYX contributors (MIT)"
-            targetFormats(NativeDistributionType.Exe)
+            targetFormats(TargetFormat.Exe)
             windows {
                 menu = true
                 perUserInstall = true

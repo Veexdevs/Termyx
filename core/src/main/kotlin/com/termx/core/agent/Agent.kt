@@ -45,7 +45,7 @@ Rules:
 - Prefer small, verifiable steps. Read output before deciding next steps.
 """.trimIndent()
 
-    suspend fun run(userRequest: String, onEvent: (AgentEvent) -> Unit) {
+    suspend fun run(userRequest: String, onEvent: suspend (AgentEvent) -> Unit) {
         val provider = ctx.defaultProvider
         if (provider == null) {
             onEvent(AgentEvent.Error("No AI provider configured. Add one in AI Providers."))
@@ -136,7 +136,7 @@ Rules:
         }
     }
 
-    private suspend fun summarize(provider: com.termx.core.model.AiProvider, messages: List<ChatMessage>, onEvent: (AgentEvent) -> Unit): String =
+    private suspend fun summarize(provider: com.termx.core.model.AiProvider, messages: List<ChatMessage>, onEvent: suspend (AgentEvent) -> Unit): String =
         try {
             AiClient.chat(provider, messages).take(2000)
         } catch (e: Exception) {
