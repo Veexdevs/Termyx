@@ -25,6 +25,6 @@ component or privilege. TERMYX never fakes functionality.
 
 ## Known constraints (by design, not bugs)
 - Android limits true background execution (Doze, OEM killers, battery). Servers are best-effort persistent.
-- Terminal uses a process pipe, not a full PTY; job control (job suspension) is limited until a native PTY is added.
+- Terminal: Android now runs the shell inside a real PTY (native JNI, `src/main/cpp/pty.c`) driving a full VT100/xterm emulator in `core` (`TerminalEmulator`), so line editing, colors, cursor movement and full-screen TUIs (vim, htop, less) work like Termux. Job control (`Ctrl+Z`/fg/bg) is functional through the PTY.
 - Desktop key store is a JSON file; production should use the OS credential manager.
 - No network/remote servers work without connectivity; local servers do not require it.

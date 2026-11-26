@@ -8,6 +8,8 @@ plugins {
 android {
     namespace = "com.termx"
     compileSdk = 34
+    // Pinned so Gradle auto-downloads the matching NDK to build the PTY JNI (src/main/cpp).
+    ndkVersion = "25.2.9519653"
 
     defaultConfig {
         applicationId = "com.termx"
@@ -16,6 +18,12 @@ android {
         versionCode = 1
         versionName = "0.1.0"
         vectorDrawables { useSupportLibrary = true }
+        externalNativeBuild {
+            cmake {
+                // Build the PTY native lib for every ABI the APK splits target.
+                abiFilters("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            }
+        }
     }
 
     buildTypes {
@@ -50,6 +58,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
 
     buildFeatures { compose = true }
 
