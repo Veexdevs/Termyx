@@ -37,7 +37,7 @@ object TerminalKeyHandler {
             KeyEvent.KEYCODE_FORWARD_DEL -> csiTilde("3", mod)
             KeyEvent.KEYCODE_INSERT -> csiTilde("2", mod)
             KeyEvent.KEYCODE_MOVE_HOME, KeyEvent.KEYCODE_HOME -> csiLetter('H', mod, cursorApp)
-            KeyEvent.KEYCODE_MOVE_END, KeyEvent.KEYCODE_END -> csiLetter('F', mod, cursorApp)
+            KeyEvent.KEYCODE_MOVE_END -> csiLetter('F', mod, cursorApp)
             KeyEvent.KEYCODE_DPAD_UP -> csiLetter('A', mod, cursorApp)
             KeyEvent.KEYCODE_DPAD_DOWN -> csiLetter('B', mod, cursorApp)
             KeyEvent.KEYCODE_DPAD_RIGHT -> csiLetter('C', mod, cursorApp)
