@@ -32,7 +32,7 @@ class ServerManager(private val dataDir: String) {
     private val runtimes = ConcurrentHashMap<String, Runtime>()
 
     private data class Runtime(
-        val config: ServerConfig,
+        var config: ServerConfig,
         var process: Process? = null,
         var state: ServerState = ServerState.STOPPED,
         var startedAtMs: Long = 0,
