@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,7 +26,7 @@ import com.termx.ui.components.formatBytes
 @Composable
 fun DownloadsScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: DownloadsViewModel = viewModel()
-    val files by vm.files
+    val files by vm.files.collectAsState()
 
     ScreenSurface("Downloads", padding) {
         Text(

@@ -5,6 +5,7 @@ import android.content.Context
 import com.termx.core.linux.LinuxSystemManager
 import com.termx.core.server.ServerManager
 import com.termx.security.EncryptedKeyStore
+import com.termx.util.Metrics
 import java.io.File
 
 /** Convenience accessor for the shared [AppContainer]. */

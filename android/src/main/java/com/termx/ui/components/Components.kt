@@ -67,12 +67,12 @@ fun InfoRow(label: String, value: String) {
 }
 
 @Composable
-fun ActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier.fillMaxWidth()) {
+fun ActionButton(text: String, modifier: Modifier = Modifier.fillMaxWidth(), onClick: () -> Unit) {
     Button(onClick = onClick, modifier = modifier) { Text(text) }
 }
 
 @Composable
-fun SecondaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier.fillMaxWidth()) {
+fun SecondaryButton(text: String, modifier: Modifier = Modifier.fillMaxWidth(), onClick: () -> Unit) {
     OutlinedButton(onClick = onClick, modifier = modifier) { Text(text) }
 }
 

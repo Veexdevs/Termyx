@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,8 +33,8 @@ import com.termx.ui.components.formatBytes
 @Composable
 fun FilesScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: FilesViewModel = viewModel()
-    val entries by vm.entries
-    val path by vm.path
+    val entries by vm.entries.collectAsState()
+    val path by vm.path.collectAsState()
     var newName by remember { mutableStateOf("") }
     var showNew by remember { mutableStateOf(false) }
 

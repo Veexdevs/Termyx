@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,8 +39,8 @@ import java.util.UUID
 @Composable
 fun AiProvidersScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: AiProvidersViewModel = viewModel()
-    val providers by vm.providers
-    val testResult by vm.testResult
+    val providers by vm.providers.collectAsState()
+    val testResult by vm.testResult.collectAsState()
 
     var editing by remember { mutableStateOf<AiProvider?>(null) }
     var showAdd by remember { mutableStateOf(false) }

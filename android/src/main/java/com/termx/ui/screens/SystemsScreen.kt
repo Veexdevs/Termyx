@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,8 +26,8 @@ import com.termx.ui.components.SecondaryButton
 @Composable
 fun SystemsScreen(navController: NavHostController, padding: PaddingValues) {
     val vm: SystemsViewModel = viewModel()
-    val status by vm.status
-    val busy by vm.busy
+    val status by vm.status.collectAsState()
+    val busy by vm.busy.collectAsState()
 
     ScreenSurface("SYSTEMS", padding) {
         Text(

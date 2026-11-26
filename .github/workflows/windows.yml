@@ -10,6 +10,9 @@ jobs:
   build:
     name: Build Windows EXE
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,10 +32,10 @@ jobs:
         run: chmod +x gradlew || true
 
       - name: Run desktop tests
-        run: gradle :desktop:test --no-daemon
+        run: gradle :desktop:test --no-daemon 2>&1 | tee /tmp/build.log; exit ${PIPESTATUS[0]}
 
       - name: Package Windows distribution (.exe)
-        run: gradle :desktop:createDistributable --no-daemon
+        run: gradle :desktop:createDistributable --no-daemon 2>&1 | tee -a /tmp/build.log; exit ${PIPESTATUS[0]}
 
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
@@ -40,3 +43,17 @@ jobs:
           name: termyx-windows-exe
           path: desktop/build/compose/binaries/main/app/**/TERMYX.exe
           if-no-files-found: warn
+
+      - name: Post build diagnostics to PR
+        if: always() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          {
+            echo "### Windows build errors (compact)"
+            echo '```'
+            grep -E '^e: ' /tmp/build.log 2>/dev/null | head -400
+            echo '```'
+          } > /tmp/diag.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body "$(cat /tmp/diag.md)" || true
